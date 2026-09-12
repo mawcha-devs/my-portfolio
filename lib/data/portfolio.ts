@@ -473,18 +473,24 @@ async function loadPortfolioData(): Promise<PortfolioData> {
     ] = await Promise.all([
       supabase
         .from('projects')
-        .select('id, slug, title, contribution_type, status, repository_url, short_description, description, published')
+        .select(
+          'id, slug, title, contribution_type, status, repository_url, short_description, description, published',
+        )
         .eq('published', true)
         .order('created_at', { ascending: false }),
       supabase
         .from('experiences')
-        .select('id, role, company_name, location, start_date, end_date, description, published, sort_order')
+        .select(
+          'id, role, company_name, location, start_date, end_date, description, published, sort_order',
+        )
         .eq('published', true)
         .order('sort_order', { ascending: true })
         .order('start_date', { ascending: false }),
       supabase
         .from('education')
-        .select('institution_name, program_name, graduation_date, cgpa, published')
+        .select(
+          'institution_name, program_name, graduation_date, cgpa, published',
+        )
         .eq('published', true)
         .order('graduation_date', { ascending: false }),
       supabase
@@ -494,7 +500,9 @@ async function loadPortfolioData(): Promise<PortfolioData> {
         .order('name', { ascending: true }),
       supabase
         .from('achievements')
-        .select('title, organization, category, period, published')
+        .select(
+          'title, organization, category, period, published',
+        )
         .eq('published', true)
         .order('category', { ascending: true }),
       supabase
@@ -503,7 +511,9 @@ async function loadPortfolioData(): Promise<PortfolioData> {
         .order('sort_order', { ascending: true }),
       supabase
         .from('blog_posts')
-        .select('id, slug, title, excerpt, content, cover_image_url, tags, published, published_at, created_at, updated_at')
+        .select(
+          'id, slug, title, excerpt, content, cover_image_url, tags, published, published_at, created_at, updated_at',
+        )
         .eq('published', true)
         .or('published_at.is.null,published_at.lte.now()')
         .order('published_at', {
@@ -513,7 +523,9 @@ async function loadPortfolioData(): Promise<PortfolioData> {
         .order('created_at', { ascending: false }),
       supabase
         .from('testimonials')
-        .select('id, quote, author_name, author_role, organization, avatar_url, published, sort_order, created_at')
+        .select(
+          'id, quote, author_name, author_role, organization, avatar_url, published, sort_order, created_at',
+        )
         .eq('published', true)
         .order('sort_order', { ascending: true })
         .order('created_at', { ascending: false }),

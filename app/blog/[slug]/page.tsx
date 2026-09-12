@@ -62,6 +62,7 @@ export default async function BlogPostPage({
                   alt={`${post.title} cover`}
                   width={1600}
                   height={900}
+                  sizes="(max-width: 768px) 100vw, 768px"
                   className="max-h-[28rem] w-full object-cover"
                 />
               ) : null}
