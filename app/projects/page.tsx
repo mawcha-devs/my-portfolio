@@ -9,6 +9,14 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { getPortfolioData } from '@/lib/data/portfolio';
+import { createPageMetadata } from '@/lib/seo';
+
+export const metadata = createPageMetadata({
+  title: 'Projects',
+  description:
+    'Selected mobile, full-stack, backend, and applied machine learning projects by Mawcha Haftu.',
+  path: '/projects',
+});
 
 function formatStatus(status: string) {
   return status === 'in_progress'

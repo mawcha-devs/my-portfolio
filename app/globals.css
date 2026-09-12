@@ -124,7 +124,7 @@ body {
   }
 
   .reveal {
-    animation: reveal 700ms ease-out both;
+    animation: none;
   }
 
   .reveal-delay-1 {
@@ -136,7 +136,7 @@ body {
   }
 
   .field {
-    @apply w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary;
+    @apply w-full rounded-lg border border-border bg-background px-3 py-2.5 text-sm text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background;
   }
 }
 
@@ -163,5 +163,11 @@ body {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .reveal {
+    animation: reveal 700ms ease-out both;
   }
 }

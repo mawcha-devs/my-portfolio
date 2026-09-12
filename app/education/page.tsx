@@ -9,6 +9,14 @@ import {
   getPortfolioData,
   priorEducation,
 } from '@/lib/data/portfolio';
+import { createPageMetadata } from '@/lib/seo';
+
+export const metadata = createPageMetadata({
+  title: 'Education',
+  description:
+    'Computer science and engineering education, academic background, and earlier school education.',
+  path: '/education',
+});
 
 export default async function EducationPage() {
   const { education } = await getPortfolioData();

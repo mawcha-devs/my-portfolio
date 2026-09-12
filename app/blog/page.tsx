@@ -9,6 +9,14 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { getPortfolioData } from '@/lib/data/portfolio';
+import { createPageMetadata } from '@/lib/seo';
+
+export const metadata = createPageMetadata({
+  title: 'Engineering Notes',
+  description:
+    'Technical notes about software architecture, implementation choices, mobile development, and project lessons.',
+  path: '/blog',
+});
 
 function formatDate(value: string | null) {
   if (!value) return null;

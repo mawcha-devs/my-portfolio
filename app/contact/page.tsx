@@ -1,6 +1,14 @@
 import { PageHeader } from '@/components/page-shell';
 import { Card } from '@/components/ui/card';
 import { ContactForm } from '@/components/contact-form';
+import { createPageMetadata } from '@/lib/seo';
+
+export const metadata = createPageMetadata({
+  title: 'Contact',
+  description:
+    'Contact Mawcha Haftu about software development, mobile applications, full-stack systems, and technical opportunities.',
+  path: '/contact',
+});
 
 export default function ContactPage() {
   return (

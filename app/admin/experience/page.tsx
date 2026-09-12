@@ -37,6 +37,7 @@ function ExperienceForm({ item }: { item?: Experience }) {
         <input type="hidden" name="id" value={item.id} />
       ) : null}
       <input
+        aria-label="Company name"
         name="company_name"
         required
         defaultValue={item?.company_name}
@@ -44,6 +45,7 @@ function ExperienceForm({ item }: { item?: Experience }) {
         className="field"
       />
       <input
+        aria-label="Role"
         name="role"
         required
         defaultValue={item?.role}
@@ -51,12 +53,14 @@ function ExperienceForm({ item }: { item?: Experience }) {
         className="field"
       />
       <input
+        aria-label="Location"
         name="location"
         defaultValue={item?.location ?? ''}
         placeholder="Location"
         className="field"
       />
       <input
+        aria-label="Sort order"
         name="sort_order"
         type="number"
         defaultValue={item?.sort_order ?? 0}
@@ -64,18 +68,21 @@ function ExperienceForm({ item }: { item?: Experience }) {
         className="field"
       />
       <input
+        aria-label="Start date"
         name="start_date"
         type="date"
         defaultValue={item?.start_date ?? ''}
         className="field"
       />
       <input
+        aria-label="End date"
         name="end_date"
         type="date"
         defaultValue={item?.end_date ?? ''}
         className="field"
       />
       <textarea
+        aria-label="Experience description"
         name="description"
         required
         defaultValue={item?.description}

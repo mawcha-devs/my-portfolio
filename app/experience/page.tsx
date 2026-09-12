@@ -6,6 +6,14 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { getPortfolioData } from '@/lib/data/portfolio';
+import { createPageMetadata } from '@/lib/seo';
+
+export const metadata = createPageMetadata({
+  title: 'Experience',
+  description:
+    'Mobile application development experience, internships, collaboration, and practical software engineering work by Mawcha Haftu.',
+  path: '/experience',
+});
 
 export default async function ExperiencePage() {
   const { experiences } = await getPortfolioData();

@@ -42,6 +42,7 @@ function ProjectForm({ project }: { project?: Project }) {
       ) : null}
       <input
         name="title"
+        aria-label="Project title"
         required
         defaultValue={project?.title}
         placeholder="Title"
@@ -49,6 +50,7 @@ function ProjectForm({ project }: { project?: Project }) {
       />
       <input
         name="slug"
+        aria-label="Project slug"
         required
         defaultValue={project?.slug}
         placeholder="Slug"
@@ -56,12 +58,14 @@ function ProjectForm({ project }: { project?: Project }) {
       />
       <input
         name="short_description"
+        aria-label="Short project description"
         defaultValue={project?.short_description ?? ''}
         placeholder="Short description"
         className="field md:col-span-2"
       />
       <textarea
         name="description"
+        aria-label="Project description"
         required
         defaultValue={project?.description}
         placeholder="Description"
@@ -69,6 +73,7 @@ function ProjectForm({ project }: { project?: Project }) {
       />
       <select
         name="status"
+        aria-label="Project status"
         defaultValue={project?.status ?? 'draft'}
         className="field"
       >
@@ -79,6 +84,7 @@ function ProjectForm({ project }: { project?: Project }) {
       </select>
       <select
         name="contribution_type"
+        aria-label="Contribution type"
         defaultValue={
           project?.contribution_type ?? 'individual'
         }
@@ -91,28 +97,33 @@ function ProjectForm({ project }: { project?: Project }) {
       </select>
       <input
         name="repository_url"
+        aria-label="Repository URL"
         defaultValue={project?.repository_url ?? ''}
         placeholder="Repository URL"
         className="field"
       />
       <input
         name="live_url"
+        aria-label="Live demo URL"
         defaultValue={project?.live_url ?? ''}
         placeholder="Verified live URL only"
         className="field"
       />
       <input
         name="technologies"
+        aria-label="Project technologies"
         placeholder="Technologies, comma separated"
         className="field md:col-span-2"
       />
       <textarea
         name="features"
+        aria-label="Project features"
         placeholder="Features, one per line"
         className="field min-h-24 md:col-span-2"
       />
       <textarea
         name="screenshots"
+        aria-label="Screenshot URLs"
         defaultValue={project?.screenshots.join('\n')}
         placeholder="Screenshot URLs, one per line"
         className="field min-h-20 md:col-span-2"
@@ -120,7 +131,8 @@ function ProjectForm({ project }: { project?: Project }) {
       <label className="text-sm text-muted-foreground md:col-span-2">
         Upload screenshots (JPEG, PNG, WebP, or AVIF; up to
         5 MB each)
-        <input
+          <input
+            aria-label="Upload project screenshots"
           name="screenshot_files"
           type="file"
           accept="image/jpeg,image/png,image/webp,image/avif"

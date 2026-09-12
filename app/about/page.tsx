@@ -1,6 +1,14 @@
 import { PageHeader } from '@/components/page-shell';
 import { Card } from '@/components/ui/card';
 import { getPortfolioData } from '@/lib/data/portfolio';
+import { createPageMetadata } from '@/lib/seo';
+
+export const metadata = createPageMetadata({
+  title: 'About',
+  description:
+    'About Mawcha Haftu, a software developer focused on mobile, full-stack, backend, database, and applied AI/ML work.',
+  path: '/about',
+});
 
 export default async function AboutPage() {
   const { profile, skillGroups } = await getPortfolioData();

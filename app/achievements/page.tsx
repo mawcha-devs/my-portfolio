@@ -7,6 +7,14 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { getPortfolioData } from '@/lib/data/portfolio';
+import { createPageMetadata } from '@/lib/seo';
+
+export const metadata = createPageMetadata({
+  title: 'Recognition',
+  description:
+    'Recognition and membership records for Mawcha Haftu, including leadership in education sector involvement.',
+  path: '/achievements',
+});
 
 export default async function AchievementsPage() {
   const { achievements } = await getPortfolioData();

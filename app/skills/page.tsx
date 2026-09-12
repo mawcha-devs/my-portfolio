@@ -2,6 +2,14 @@ import { PageHeader } from '@/components/page-shell';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { getPortfolioData } from '@/lib/data/portfolio';
+import { createPageMetadata } from '@/lib/seo';
+
+export const metadata = createPageMetadata({
+  title: 'Skills',
+  description:
+    'Technical skills organized by languages, mobile, frontend, backend, databases, tools, and architecture.',
+  path: '/skills',
+});
 
 export default async function SkillsPage() {
   const { skillGroups } = await getPortfolioData();

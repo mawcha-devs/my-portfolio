@@ -255,6 +255,7 @@ export function ContactForm() {
           {serverMessage}
         </p>
       </div>
+      {errors.form ? <p role="alert" className="text-sm text-danger">{errors.form}</p> : null}
     </form>
   );
 }

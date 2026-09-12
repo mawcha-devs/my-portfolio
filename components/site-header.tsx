@@ -30,6 +30,14 @@ export function SiteHeader() {
     setMobileOpen(false);
   }, [pathname]);
 
+  React.useEffect(() => {
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setMobileOpen(false);
+    };
+    document.addEventListener('keydown', closeOnEscape);
+    return () => document.removeEventListener('keydown', closeOnEscape);
+  }, []);
+
   return (
     <header className="sticky top-0 z-50 border-b border-border/70 bg-background/75 backdrop-blur-xl">
       <div className="container-shell flex h-16 items-center justify-between">
@@ -80,10 +88,11 @@ export function SiteHeader() {
             type="button"
             aria-label="Toggle navigation menu"
             aria-expanded={mobileOpen}
+            aria-controls="mobile-navigation"
             onClick={() => setMobileOpen((prev) => !prev)}
             className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-muted text-foreground transition-colors hover:border-primary/50 hover:bg-primary/10"
           >
-            <span className="sr-only">Open menu</span>
+            <span className="sr-only">{mobileOpen ? 'Close menu' : 'Open menu'}</span>
             <div className="flex flex-col gap-1.5">
               <span className="block h-0.5 w-4 rounded bg-current" />
               <span className="block h-0.5 w-4 rounded bg-current" />
@@ -94,8 +103,8 @@ export function SiteHeader() {
       </div>
 
       {mobileOpen ? (
-        <div className="border-t border-border bg-background/95 lg:hidden">
-          <nav className="container-shell flex flex-col gap-2 py-4">
+        <div id="mobile-navigation" className="border-t border-border bg-background/95 lg:hidden">
+          <nav aria-label="Mobile navigation" className="container-shell flex flex-col gap-2 py-4">
             {navItems.map((item) => (
               <AppLink
                 key={item.href}

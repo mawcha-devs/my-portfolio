@@ -1,40 +1,33 @@
 import type { Metadata } from 'next';
-//import './globals.css';
+import './globals.css';
 import { SiteHeader } from '@/components/site-header';
 import { SiteFooter } from '@/components/site-footer';
 import { cn } from '@/lib/utils';
+import {
+  getSiteDescription,
+  getSiteName,
+  getSiteUrl,
+} from '@/lib/seo';
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_APP_URL ??
-      'http://localhost:3000',
-  ),
+  metadataBase: getSiteUrl(),
+  alternates: { canonical: getSiteUrl() },
   title: {
-    default:
-      process.env.NEXT_PUBLIC_SITE_NAME ??
-      'Mawcha Haftu Portfolio',
-    template: `%s | ${process.env.NEXT_PUBLIC_SITE_NAME ?? 'Mawcha Haftu Portfolio'}`,
+    default: getSiteName(),
+    template: `%s | ${getSiteName()}`,
   },
-  description:
-    process.env.NEXT_PUBLIC_SITE_DESCRIPTION ??
-    'Portfolio of Mawcha Haftu, a software developer focused on mobile, full-stack, and backend engineering.',
+  description: getSiteDescription(),
   openGraph: {
-    title:
-      process.env.NEXT_PUBLIC_SITE_NAME ??
-      'Mawcha Haftu Portfolio',
-    description:
-      process.env.NEXT_PUBLIC_SITE_DESCRIPTION ??
-      'Portfolio of Mawcha Haftu, a software developer focused on mobile, full-stack, and backend engineering.',
+    title: getSiteName(),
+    description: getSiteDescription(),
+    url: getSiteUrl(),
+    siteName: getSiteName(),
     type: 'website',
   },
   twitter: {
-    card: 'summary_large_image',
-    title:
-      process.env.NEXT_PUBLIC_SITE_NAME ??
-      'Mawcha Haftu Portfolio',
-    description:
-      process.env.NEXT_PUBLIC_SITE_DESCRIPTION ??
-      'Portfolio of Mawcha Haftu, a software developer focused on mobile, full-stack, and backend engineering.',
+    card: 'summary',
+    title: getSiteName(),
+    description: getSiteDescription(),
   },
 };
 

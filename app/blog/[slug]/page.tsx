@@ -5,6 +5,27 @@ import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { ArticleContent } from '@/components/blog/article-content';
 import { getPortfolioData } from '@/lib/data/portfolio';
+import { createPageMetadata } from '@/lib/seo';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const { blogPosts } = await getPortfolioData();
+  const post = blogPosts.find((item) => item.slug === slug);
+  if (!post) return {};
+
+  return createPageMetadata({
+    title: post.title,
+    description:
+      post.excerpt ?? 'Engineering Notes by Mawcha Haftu.',
+    path: `/blog/${post.slug}`,
+    type: 'article',
+    image: post.coverImageUrl,
+  });
+}
 
 function formatDate(value: string | null) {
   if (!value) return null;
@@ -38,7 +59,7 @@ export default async function BlogPostPage({
               {post.coverImageUrl ? (
                 <Image
                   src={post.coverImageUrl}
-                  alt=""
+                  alt={`${post.title} cover`}
                   width={1600}
                   height={900}
                   className="max-h-[28rem] w-full object-cover"

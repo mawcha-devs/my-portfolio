@@ -7,6 +7,14 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { getPortfolioData } from '@/lib/data/portfolio';
+import { createPageMetadata } from '@/lib/seo';
+
+export const metadata = createPageMetadata({
+  title: 'Certifications',
+  description:
+    'Professional learning credentials in AI fundamentals, data analytics, Android development, and UI/UX design.',
+  path: '/certifications',
+});
 
 export default async function CertificationsPage() {
   const { certifications } = await getPortfolioData();

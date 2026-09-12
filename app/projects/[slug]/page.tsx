@@ -5,6 +5,27 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { getPortfolioData } from '@/lib/data/portfolio';
+import { createPageMetadata } from '@/lib/seo';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const { projects } = await getPortfolioData();
+  const project = projects.find(
+    (item) => item.slug === slug,
+  );
+  if (!project) return {};
+
+  return createPageMetadata({
+    title: project.title,
+    description: project.summary,
+    path: `/projects/${project.slug}`,
+    image: project.screenshots[0] ?? null,
+  });
+}
 
 function formatStatus(status: string) {
   return status === 'in_progress'
