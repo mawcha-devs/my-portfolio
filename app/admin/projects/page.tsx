@@ -131,8 +131,8 @@ function ProjectForm({ project }: { project?: Project }) {
       <label className="text-sm text-muted-foreground md:col-span-2">
         Upload screenshots (JPEG, PNG, WebP, or AVIF; up to
         5 MB each)
-          <input
-            aria-label="Upload project screenshots"
+        <input
+          aria-label="Upload project screenshots"
           name="screenshot_files"
           type="file"
           accept="image/jpeg,image/png,image/webp,image/avif"

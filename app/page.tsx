@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { getPortfolioData } from '@/lib/data/portfolio';
+import { TestimonialsSlider } from '@/components/testimonials-slider';
 
 const featuredProjectSlugs = [
   'project-management-system',
@@ -67,6 +68,7 @@ export default async function HomePage() {
     education,
     certifications,
     skillGroups,
+    testimonials,
   } = await getPortfolioData();
   const featuredProjects = featuredProjectSlugs
     .map((slug) =>
@@ -177,6 +179,22 @@ export default async function HomePage() {
               <span className="ml-2">-&gt;</span>
             </Link>
           </div>
+        </div>
+      </section>
+
+      <section className="section-shell">
+        <div className="container-shell grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:items-center lg:gap-20">
+          <div>
+            <p className="eyebrow">Social proof</p>
+            <h2 className="section-title">
+              What collaborators say.
+            </h2>
+            <p className="mt-4 leading-7 text-muted-foreground">
+              Verified feedback will be added here as it
+              becomes available.
+            </p>
+          </div>
+          <TestimonialsSlider testimonials={testimonials} />
         </div>
       </section>
 

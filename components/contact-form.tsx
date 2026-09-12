@@ -149,10 +149,7 @@ export function ContactForm() {
       className="space-y-5"
       aria-describedby="contact-status"
     >
-      <div
-        className="absolute -left-[9999px]"
-        aria-hidden="true"
-      >
+      <div className="hidden" aria-hidden="true">
         <label htmlFor="website">Website</label>
         <input
           id="website"
@@ -255,7 +252,11 @@ export function ContactForm() {
           {serverMessage}
         </p>
       </div>
-      {errors.form ? <p role="alert" className="text-sm text-danger">{errors.form}</p> : null}
+      {errors.form ? (
+        <p role="alert" className="text-sm text-danger">
+          {errors.form}
+        </p>
+      ) : null}
     </form>
   );
 }

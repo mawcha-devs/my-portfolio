@@ -383,6 +383,44 @@ export type Database = {
           updated_at?: string;
         };
       };
+      testimonials: {
+        Row: {
+          id: string;
+          quote: string;
+          author_name: string;
+          author_role: string | null;
+          organization: string | null;
+          avatar_url: string | null;
+          published: boolean;
+          sort_order: number;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          quote: string;
+          author_name: string;
+          author_role?: string | null;
+          organization?: string | null;
+          avatar_url?: string | null;
+          published?: boolean;
+          sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          quote?: string;
+          author_name?: string;
+          author_role?: string | null;
+          organization?: string | null;
+          avatar_url?: string | null;
+          published?: boolean;
+          sort_order?: number;
+          created_at?: string;
+          updated_at?: string;
+        };
+      };
       blog_posts: {
         Row: {
           id: string;

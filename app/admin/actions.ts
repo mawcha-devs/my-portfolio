@@ -1,6 +1,6 @@
 'use server';
 
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { getAuthorizedSupabaseClient } from '@/lib/supabase/auth';
 
@@ -219,6 +219,7 @@ export async function saveProject(formData: FormData) {
         await deleteAsset(client, oldUrl);
   }
   revalidatePath('/projects');
+  revalidateTag('portfolio-data');
   redirect('/admin/projects?status=saved');
   revalidatePath(`/projects/${base.slug}`);
   revalidatePath('/admin/projects');
@@ -238,6 +239,7 @@ export async function deleteProject(formData: FormData) {
     await deleteAsset(client, row.image_url);
   await client.from('projects').delete().eq('id', id);
   revalidatePath('/projects');
+  revalidateTag('portfolio-data');
   redirect('/admin/projects?status=deleted');
   revalidatePath('/admin/projects');
 }
@@ -255,6 +257,7 @@ export async function toggleProjectPublished(
     } as never)
     .eq('id', id);
   revalidatePath('/projects');
+  revalidateTag('portfolio-data');
   redirect('/admin/projects?status=published');
   revalidatePath('/admin/projects');
 }
@@ -290,6 +293,7 @@ export async function saveExperience(formData: FormData) {
       .from('experiences')
       .insert(payload as never);
   revalidatePath('/experience');
+  revalidateTag('portfolio-data');
   redirect('/admin/experience?status=saved');
   revalidatePath('/admin/experience');
 }
@@ -300,6 +304,7 @@ export async function deleteExperience(formData: FormData) {
   if (!client || !id) throw new Error('Unauthorized.');
   await client.from('experiences').delete().eq('id', id);
   revalidatePath('/experience');
+  revalidateTag('portfolio-data');
   redirect('/admin/experience?status=deleted');
   revalidatePath('/admin/experience');
 }
@@ -316,6 +321,7 @@ export async function reorderExperience(
       .update({ sort_order } as never)
       .eq('id', id);
   revalidatePath('/experience');
+  revalidateTag('portfolio-data');
   revalidatePath('/admin/experience');
 }
 
@@ -378,6 +384,7 @@ export async function savePost(formData: FormData) {
   if (uploadedCover && previousCover)
     await deleteAsset(client, previousCover);
   revalidatePath('/blog');
+  revalidateTag('portfolio-data');
   redirect('/admin/blog?status=saved');
   revalidatePath(`/blog/${slug}`);
   revalidatePath('/admin/blog');
@@ -399,6 +406,7 @@ export async function deletePost(formData: FormData) {
       ?.cover_image_url ?? null,
   );
   revalidatePath('/blog');
+  revalidateTag('portfolio-data');
   redirect('/admin/blog?status=deleted');
   revalidatePath('/admin/blog');
 }
@@ -420,6 +428,7 @@ export async function togglePostPublished(
     } as never)
     .eq('id', id);
   revalidatePath('/blog');
+  revalidateTag('portfolio-data');
   revalidatePath('/admin/blog');
 }
 
@@ -445,4 +454,64 @@ export async function deleteMessage(formData: FormData) {
     .eq('id', id);
   revalidatePath('/admin/messages');
   redirect('/admin/messages?status=deleted');
+}
+
+export async function saveTestimonial(formData: FormData) {
+  const client = await getAuthorizedSupabaseClient();
+  if (!client) throw new Error('Unauthorized.');
+  const id = value(formData, 'id');
+  const quote = value(formData, 'quote');
+  const author_name = value(formData, 'author_name');
+  if (!quote || !author_name)
+    throw new Error('Quote and author name are required.');
+  const payload = {
+    quote,
+    author_name,
+    author_role: value(formData, 'author_role') || null,
+    organization: value(formData, 'organization') || null,
+    avatar_url: value(formData, 'avatar_url') || null,
+    published: formData.get('published') === 'on',
+    sort_order: Number(value(formData, 'sort_order') || 0),
+  };
+  if (id)
+    await client
+      .from('testimonials')
+      .update(payload as never)
+      .eq('id', id);
+  else
+    await client
+      .from('testimonials')
+      .insert(payload as never);
+  revalidatePath('/');
+  revalidateTag('portfolio-data');
+  revalidatePath('/admin/testimonials');
+  redirect('/admin/testimonials?status=saved');
+}
+
+export async function deleteTestimonial(
+  formData: FormData,
+) {
+  const client = await getAuthorizedSupabaseClient();
+  const id = value(formData, 'id');
+  if (!client || !id) throw new Error('Unauthorized.');
+  await client.from('testimonials').delete().eq('id', id);
+  revalidatePath('/');
+  revalidateTag('portfolio-data');
+  redirect('/admin/testimonials?status=deleted');
+}
+
+export async function toggleTestimonialPublished(
+  formData: FormData,
+) {
+  const client = await getAuthorizedSupabaseClient();
+  const id = value(formData, 'id');
+  if (!client || !id) throw new Error('Unauthorized.');
+  const published = value(formData, 'published') === 'true';
+  await client
+    .from('testimonials')
+    .update({ published: !published } as never)
+    .eq('id', id);
+  revalidatePath('/');
+  revalidateTag('portfolio-data');
+  redirect('/admin/testimonials?status=published');
 }

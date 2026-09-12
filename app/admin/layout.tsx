@@ -79,6 +79,12 @@ export default async function AdminLayout({
             >
               Messages
             </Link>
+            <Link
+              href="/admin/testimonials"
+              className="hover:text-foreground"
+            >
+              Testimonials
+            </Link>
             <AdminLogoutButton />
           </nav>
         </div>

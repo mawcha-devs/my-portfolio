@@ -1,4 +1,5 @@
 import { createSupabaseServerClient } from '@/lib/supabase/server';
+import { unstable_cache } from 'next/cache';
 
 export type ExperienceRecord = {
   id: string;
@@ -45,6 +46,17 @@ export type BlogPostRecord = {
   updatedAt: string;
 };
 
+export type TestimonialRecord = {
+  id: string;
+  quote: string;
+  authorName: string;
+  authorRole: string | null;
+  organization: string | null;
+  avatarUrl: string | null;
+  published: boolean;
+  sortOrder: number;
+};
+
 type PortfolioData = {
   profile: typeof profile;
   experiences: ExperienceRecord[];
@@ -54,6 +66,7 @@ type PortfolioData = {
   skillGroups: typeof skillGroups;
   projects: ProjectRecord[];
   blogPosts: BlogPostRecord[];
+  testimonials: TestimonialRecord[];
 };
 
 export const profile = {
@@ -427,7 +440,7 @@ export const sourceProjectMap = Object.fromEntries(
   projects.map((project) => [project.slug, project]),
 );
 
-export async function getPortfolioData(): Promise<PortfolioData> {
+async function loadPortfolioData(): Promise<PortfolioData> {
   const fallback = {
     profile,
     experiences,
@@ -437,6 +450,7 @@ export async function getPortfolioData(): Promise<PortfolioData> {
     skillGroups,
     projects,
     blogPosts: [],
+    testimonials: [],
   } satisfies PortfolioData;
 
   const supabase = createSupabaseServerClient();
@@ -454,47 +468,54 @@ export async function getPortfolioData(): Promise<PortfolioData> {
       achievementsRes,
       skillsRes,
       blogPostsRes,
+      testimonialsRes,
       screenshotsRes,
     ] = await Promise.all([
       supabase
         .from('projects')
-        .select('*')
+        .select('id, slug, title, contribution_type, status, repository_url, short_description, description, published')
         .eq('published', true)
         .order('created_at', { ascending: false }),
       supabase
         .from('experiences')
-        .select('*')
+        .select('id, role, company_name, location, start_date, end_date, description, published, sort_order')
         .eq('published', true)
         .order('sort_order', { ascending: true })
         .order('start_date', { ascending: false }),
       supabase
         .from('education')
-        .select('*')
+        .select('institution_name, program_name, graduation_date, cgpa, published')
         .eq('published', true)
         .order('graduation_date', { ascending: false }),
       supabase
         .from('certifications')
-        .select('*')
+        .select('name, issuer, published')
         .eq('published', true)
         .order('name', { ascending: true }),
       supabase
         .from('achievements')
-        .select('*')
+        .select('title, organization, category, period, published')
         .eq('published', true)
         .order('category', { ascending: true }),
       supabase
         .from('skills')
-        .select('*')
+        .select('name, category, sort_order')
         .order('sort_order', { ascending: true }),
       supabase
         .from('blog_posts')
-        .select('*')
+        .select('id, slug, title, excerpt, content, cover_image_url, tags, published, published_at, created_at, updated_at')
         .eq('published', true)
         .or('published_at.is.null,published_at.lte.now()')
         .order('published_at', {
           ascending: false,
           nullsFirst: false,
         })
+        .order('created_at', { ascending: false }),
+      supabase
+        .from('testimonials')
+        .select('id, quote, author_name, author_role, organization, avatar_url, published, sort_order, created_at')
+        .eq('published', true)
+        .order('sort_order', { ascending: true })
         .order('created_at', { ascending: false }),
       supabase
         .from('project_screenshots')
@@ -667,6 +688,28 @@ export async function getPortfolioData(): Promise<PortfolioData> {
       updatedAt: post.updated_at,
     }));
 
+    const remoteTestimonials = (
+      (testimonialsRes.data ?? []) as Array<{
+        id: string;
+        quote: string;
+        author_name: string;
+        author_role?: string | null;
+        organization?: string | null;
+        avatar_url?: string | null;
+        published: boolean;
+        sort_order: number;
+      }>
+    ).map((testimonial) => ({
+      id: testimonial.id,
+      quote: testimonial.quote,
+      authorName: testimonial.author_name,
+      authorRole: testimonial.author_role ?? null,
+      organization: testimonial.organization ?? null,
+      avatarUrl: testimonial.avatar_url ?? null,
+      published: testimonial.published,
+      sortOrder: testimonial.sort_order,
+    }));
+
     const data: PortfolioData = {
       profile,
       experiences: remoteExperiences.length
@@ -688,6 +731,7 @@ export async function getPortfolioData(): Promise<PortfolioData> {
         ? remoteProjects
         : projects,
       blogPosts: remoteBlogPosts,
+      testimonials: remoteTestimonials,
     };
 
     return data;
@@ -699,3 +743,9 @@ export async function getPortfolioData(): Promise<PortfolioData> {
     return fallback;
   }
 }
+
+export const getPortfolioData = unstable_cache(
+  loadPortfolioData,
+  ['portfolio-data'],
+  { revalidate: 60, tags: ['portfolio-data'] },
+);

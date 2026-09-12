@@ -39,7 +39,7 @@ function PostForm({ post }: { post?: Post }) {
       ) : null}
       <input
         name="title"
-         aria-label="Post title"
+        aria-label="Post title"
         required
         defaultValue={post?.title}
         placeholder="Title"
@@ -47,7 +47,7 @@ function PostForm({ post }: { post?: Post }) {
       />
       <input
         name="slug"
-         aria-label="Post slug"
+        aria-label="Post slug"
         required
         defaultValue={post?.slug}
         placeholder="Slug"
@@ -55,14 +55,14 @@ function PostForm({ post }: { post?: Post }) {
       />
       <input
         name="tags"
-         aria-label="Post tags"
+        aria-label="Post tags"
         defaultValue={post?.tags.join(', ')}
         placeholder="Tags, comma separated"
         className="field"
       />
       <input
         name="cover_image_url"
-         aria-label="Cover image URL"
+        aria-label="Cover image URL"
         defaultValue={post?.cover_image_url ?? ''}
         placeholder="Optional cover image URL"
         className="field"
@@ -73,20 +73,20 @@ function PostForm({ post }: { post?: Post }) {
           name="cover_image"
           type="file"
           accept="image/jpeg,image/png,image/webp,image/avif"
-           aria-label="Upload cover image"
+          aria-label="Upload cover image"
           className="field mt-2"
         />
       </label>
       <textarea
         name="excerpt"
-         aria-label="Post excerpt"
+        aria-label="Post excerpt"
         defaultValue={post?.excerpt ?? ''}
         placeholder="Excerpt"
         className="field min-h-24 md:col-span-2"
       />
       <textarea
         name="content"
-         aria-label="Post content"
+        aria-label="Post content"
         required
         defaultValue={post?.content}
         placeholder="Markdown-style content"
