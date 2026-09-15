@@ -18,15 +18,41 @@ function inlineContent(text: string) {
       );
     }
 
+    let safeHref: string;
+    try {
+      const parsed = new URL(
+        link[2],
+        'http://portfolio.local',
+      );
+      if (
+        !['http:', 'https:', 'mailto:'].includes(
+          parsed.protocol,
+        )
+      ) {
+        return (
+          <React.Fragment key={`${part}-${index}`}>
+            {link[1]}
+          </React.Fragment>
+        );
+      }
+      safeHref = link[2];
+    } catch {
+      return (
+        <React.Fragment key={`${part}-${index}`}>
+          {link[1]}
+        </React.Fragment>
+      );
+    }
+
     return (
       <a
         key={`${link[1]}-${index}`}
-        href={link[2]}
+        href={safeHref}
         target={
-          link[2].startsWith('http') ? '_blank' : undefined
+          safeHref.startsWith('http') ? '_blank' : undefined
         }
         rel={
-          link[2].startsWith('http')
+          safeHref.startsWith('http')
             ? 'noreferrer'
             : undefined
         }

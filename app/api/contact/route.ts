@@ -67,6 +67,37 @@ function clientKey(request: Request) {
 }
 
 export async function POST(request: Request) {
+  const origin = request.headers.get('origin');
+  const configuredOrigin = process.env.NEXT_PUBLIC_APP_URL ?? new URL(request.url).origin;
+  if (origin) {
+    try {
+      if (
+        new URL(origin).origin !==
+        new URL(configuredOrigin).origin
+      ) {
+        return NextResponse.json(
+          { error: 'Invalid request origin.' },
+          { status: 403 },
+        );
+      }
+    } catch {
+      return NextResponse.json(
+        { error: 'Invalid request origin.' },
+        { status: 403 },
+      );
+    }
+  }
+
+  const contentLength = Number(
+    request.headers.get('content-length') ?? 0,
+  );
+  if (contentLength > 64 * 1024) {
+    return NextResponse.json(
+      { error: 'Request is too large.' },
+      { status: 413 },
+    );
+  }
+
   const key = clientKey(request);
   const now = Date.now();
   const current = rateLimit.get(key);

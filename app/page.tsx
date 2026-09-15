@@ -89,7 +89,7 @@ export default async function HomePage() {
             <h1 className="max-w-4xl text-5xl font-semibold leading-[1.02] tracking-[-0.045em] sm:text-6xl lg:text-7xl">
               Mawcha Haftu
               <span className="mt-3 block text-primary">
-                builds practical software.
+                I build practical software.
               </span>
             </h1>
             <p className="mt-7 max-w-2xl text-lg leading-8 text-muted-foreground sm:text-xl">

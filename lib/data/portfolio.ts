@@ -1,4 +1,4 @@
-import { createSupabaseServerClient } from '@/lib/supabase/server';
+import { createSupabasePublicServerClient } from '@/lib/supabase/public-server';
 import { unstable_cache } from 'next/cache';
 
 export type ExperienceRecord = {
@@ -453,7 +453,7 @@ async function loadPortfolioData(): Promise<PortfolioData> {
     testimonials: [],
   } satisfies PortfolioData;
 
-  const supabase = createSupabaseServerClient();
+  const supabase = createSupabasePublicServerClient();
 
   if (!supabase) {
     return fallback;

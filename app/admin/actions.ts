@@ -15,6 +15,23 @@ function list(valueToSplit: string, separator = ',') {
     .filter(Boolean);
 }
 
+function safeHttpUrl(
+  valueToValidate: string,
+  label: string,
+) {
+  if (!valueToValidate) return null;
+  try {
+    const url = new URL(valueToValidate);
+    if (!['http:', 'https:'].includes(url.protocol))
+      throw new Error();
+    return url.toString();
+  } catch {
+    throw new Error(
+      `${label} must be a valid HTTP or HTTPS URL.`,
+    );
+  }
+}
+
 const assetBucket = 'portfolio-assets';
 const allowedImageTypes = new Set([
   'image/jpeg',
@@ -187,9 +204,14 @@ export async function saveProject(formData: FormData) {
     status: value(formData, 'status') || 'draft',
     contribution_type:
       value(formData, 'contribution_type') || 'individual',
-    repository_url:
-      value(formData, 'repository_url') || null,
-    live_url: value(formData, 'live_url') || null,
+    repository_url: safeHttpUrl(
+      value(formData, 'repository_url'),
+      'Repository URL',
+    ),
+    live_url: safeHttpUrl(
+      value(formData, 'live_url'),
+      'Live URL',
+    ),
     published: formData.get('published') === 'on',
     featured: formData.get('featured') === 'on',
   };
