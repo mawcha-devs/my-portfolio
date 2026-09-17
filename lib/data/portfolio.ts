@@ -99,15 +99,33 @@ export const skillGroups = [
       'TypeScript',
       'C',
       'C++',
-      'SQL',
     ],
   },
-  { title: 'Mobile', items: ['Flutter'] },
+  {
+    title: 'Mobile',
+    items: [
+      'Flutter',
+      'Riverpod',
+      'BloC',
+      'Dio',
+      'Responsive UI',
+      'State management',
+    ],
+  },
   {
     title: 'Frontend',
-    items: ['React.js', 'HTML', 'CSS', 'Bootstrap'],
+    items: [
+      'React.js',
+      'TypeScript',
+      'HTML',
+      'CSS',
+      'Material UI',
+    ],
   },
-  { title: 'Backend', items: ['Node.js', 'Express.js'] },
+  {
+    title: 'Backend',
+    items: ['Node.js', 'Express.js', 'REST APIs'],
+  },
   {
     title: 'Databases',
     items: ['MySQL', 'SQLite', 'MongoDB', 'Mongoose'],
@@ -115,13 +133,8 @@ export const skillGroups = [
   { title: 'Tools', items: ['Git', 'GitHub', 'Postman'] },
   {
     title: 'Architecture',
-    items: [
-      'Clean Architecture',
-      'REST APIs',
-      'Responsive UI',
-      'State management',
-      'Full-stack application development',
-    ],
+
+    items: ['Clean Architecture', 'MVC', 'features first'],
   },
 ];
 
@@ -159,7 +172,7 @@ export const education = [
 
 export const priorEducation = [
   { institution: 'Kallamino Special High School' },
-  { institution: 'May Weyni Complete Elementary School' },
+  { institution: 'May Weyni Elementary School' },
 ];
 
 export const certifications = [
