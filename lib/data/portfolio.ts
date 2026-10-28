@@ -152,7 +152,7 @@ export const experiences: ExperienceRecord[] = [
     id: 'exp-grand-tech',
     role: 'Mobile App Developer / Intern',
     company: 'Grand Technology Solutions',
-    location: 'Mekelle, Tigray, Ethiopia',
+    location: 'Addis Ababa, Ethiopia',
     period: 'February 2026 – May 2026',
     description:
       'Worked as part of a development team, contributed to a Project Management System, worked on mobile application development using Flutter, and learned and applied teamwork, requirements analysis, planning, design, and implementation.',

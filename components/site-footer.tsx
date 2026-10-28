@@ -16,7 +16,7 @@ export function SiteFooter() {
             Mawcha Haftu
           </p>
           <p className="mt-2 text-sm text-muted-foreground">
-            Software Developer based in Mekelle
+            Software Developer based in Addis Ababa
           </p>
         </div>
 

@@ -241,7 +241,7 @@ export async function saveProject(formData: FormData) {
         await deleteAsset(client, oldUrl);
   }
   revalidatePath('/projects');
-  revalidateTag('portfolio-data');
+  revalidateTag('portfolio-data','max');
   redirect('/admin/projects?status=saved');
   revalidatePath(`/projects/${base.slug}`);
   revalidatePath('/admin/projects');
@@ -261,7 +261,7 @@ export async function deleteProject(formData: FormData) {
     await deleteAsset(client, row.image_url);
   await client.from('projects').delete().eq('id', id);
   revalidatePath('/projects');
-  revalidateTag('portfolio-data');
+  revalidateTag('portfolio-data','max');
   redirect('/admin/projects?status=deleted');
   revalidatePath('/admin/projects');
 }
@@ -279,7 +279,7 @@ export async function toggleProjectPublished(
     } as never)
     .eq('id', id);
   revalidatePath('/projects');
-  revalidateTag('portfolio-data');
+  revalidateTag('portfolio-data','max');
   redirect('/admin/projects?status=published');
   revalidatePath('/admin/projects');
 }
@@ -315,7 +315,7 @@ export async function saveExperience(formData: FormData) {
       .from('experiences')
       .insert(payload as never);
   revalidatePath('/experience');
-  revalidateTag('portfolio-data');
+    revalidateTag('portfolio-data','max');
   redirect('/admin/experience?status=saved');
   revalidatePath('/admin/experience');
 }
@@ -326,7 +326,7 @@ export async function deleteExperience(formData: FormData) {
   if (!client || !id) throw new Error('Unauthorized.');
   await client.from('experiences').delete().eq('id', id);
   revalidatePath('/experience');
-  revalidateTag('portfolio-data');
+  revalidateTag('portfolio-data','max');
   redirect('/admin/experience?status=deleted');
   revalidatePath('/admin/experience');
 }
@@ -343,7 +343,7 @@ export async function reorderExperience(
       .update({ sort_order } as never)
       .eq('id', id);
   revalidatePath('/experience');
-  revalidateTag('portfolio-data');
+  revalidateTag('portfolio-data','max');
   revalidatePath('/admin/experience');
 }
 
@@ -406,7 +406,7 @@ export async function savePost(formData: FormData) {
   if (uploadedCover && previousCover)
     await deleteAsset(client, previousCover);
   revalidatePath('/blog');
-  revalidateTag('portfolio-data');
+  revalidateTag('portfolio-data','max');
   redirect('/admin/blog?status=saved');
   revalidatePath(`/blog/${slug}`);
   revalidatePath('/admin/blog');
@@ -428,7 +428,7 @@ export async function deletePost(formData: FormData) {
       ?.cover_image_url ?? null,
   );
   revalidatePath('/blog');
-  revalidateTag('portfolio-data');
+  revalidateTag('portfolio-data','max');
   redirect('/admin/blog?status=deleted');
   revalidatePath('/admin/blog');
 }
@@ -450,7 +450,7 @@ export async function togglePostPublished(
     } as never)
     .eq('id', id);
   revalidatePath('/blog');
-  revalidateTag('portfolio-data');
+  revalidateTag('portfolio-data','max');
   revalidatePath('/admin/blog');
 }
 
@@ -505,7 +505,7 @@ export async function saveTestimonial(formData: FormData) {
       .from('testimonials')
       .insert(payload as never);
   revalidatePath('/');
-  revalidateTag('portfolio-data');
+  revalidateTag('portfolio-data','max');
   revalidatePath('/admin/testimonials');
   redirect('/admin/testimonials?status=saved');
 }
@@ -518,7 +518,7 @@ export async function deleteTestimonial(
   if (!client || !id) throw new Error('Unauthorized.');
   await client.from('testimonials').delete().eq('id', id);
   revalidatePath('/');
-  revalidateTag('portfolio-data');
+  revalidateTag('portfolio-data','max');
   redirect('/admin/testimonials?status=deleted');
 }
 
@@ -534,6 +534,6 @@ export async function toggleTestimonialPublished(
     .update({ published: !published } as never)
     .eq('id', id);
   revalidatePath('/');
-  revalidateTag('portfolio-data');
+  revalidateTag('portfolio-data','max');
   redirect('/admin/testimonials?status=published');
 }
