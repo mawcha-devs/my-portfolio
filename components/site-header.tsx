@@ -2,6 +2,7 @@
 
 import * as React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { AppLink } from '@/components/ui/link';
@@ -50,9 +51,14 @@ export function SiteHeader() {
           className="flex items-center gap-3"
           aria-label="Go to homepage"
         >
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary text-sm font-bold text-primary-foreground shadow-[0_0_24px_hsl(var(--primary)/0.2)]">
-            MH
-          </div>
+          <Image
+            src="/logo.jpg"
+            alt=""
+            width={36}
+            height={36}
+            priority
+            className="h-9 w-9 rounded-lg object-cover shadow-[0_0_24px_hsl(var(--primary)/0.2)]"
+          />
           <div className="flex flex-col leading-none">
             <span className="text-sm font-semibold uppercase tracking-[0.16em] text-foreground">
               Mawcha
