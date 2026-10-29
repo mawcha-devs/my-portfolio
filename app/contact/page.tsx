@@ -45,6 +45,21 @@ export default function ContactPage() {
                   {profile.email}
                 </a>
               </div>
+
+              <div>
+                <p className="text-xs uppercase tracking-[0.16em] text-muted-foreground">
+                  WhatsApp
+                </p>
+                <a
+                  href={`https://wa.me/${profile.whatsapp.replace(/\D/g, '')}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-1 inline-flex font-medium text-primary hover:text-foreground"
+                >
+                  {profile.whatsapp}
+                </a>
+              </div>
+
               <div>
                 <p className="text-xs uppercase tracking-[0.16em] text-muted-foreground">
                   GitHub

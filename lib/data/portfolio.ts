@@ -85,6 +85,7 @@ export const profile = {
     cgpa: '3.57',
   },
   email: 'mawcha.haftu@gmail.com',
+  whatsapp: '+251946881761',
   github: 'https://github.com/mawcha-devs',
   linkedin:
     'https://www.linkedin.com/in/mawcha-h-67a93b3a8/',
@@ -151,16 +152,6 @@ export const experiences: ExperienceRecord[] = [
       'Instructed students of all levels in Python using structured lessons and practical exercises. Covered basic topics (variables, data types, control flow, functions), intermediate subjects (data structures, file handling, OOP), and advanced concepts. Created coding challenges to reinforce learning, improve problem-solving skills, and boost confidence. Analyzed student code, offered constructive feedback, and supported debugging to help students grasp the underlying causes of errors.',
   },
   {
-    id: 'exp-c-metnee',
-    role: 'Mobile App Developer / Intern',
-    company: 'C. Metnee Systems PLC',
-    location: 'Addis Ababa, Ethiopia',
-    period: 'October 2025 – January 2026',
-    startDate: '2025-10-01',
-    description:
-      'Worked on application development with teammates, worked with Git/GitHub collaboration, translated UI designs into functional mobile interfaces, worked through real-world development challenges, and focused on UI implementation and mobile development.',
-  },
-  {
     id: 'exp-grand-tech',
     role: 'Mobile App Developer / Intern',
     company: 'Grand Technology Solutions',
@@ -169,6 +160,16 @@ export const experiences: ExperienceRecord[] = [
     startDate: '2026-02-01',
     description:
       'Worked as part of a development team, contributed to a Project Management System, worked on mobile application development using Flutter, and learned and applied teamwork, requirements analysis, planning, design, and implementation.',
+  },
+  {
+    id: 'exp-c-metnee',
+    role: 'Mobile App Developer / Intern',
+    company: 'C. Metnee Systems PLC',
+    location: 'Addis Ababa, Ethiopia',
+    period: 'October 2025 – January 2026',
+    startDate: '2025-10-01',
+    description:
+      'Worked on application development with teammates, worked with Git/GitHub collaboration, translated UI designs into functional mobile interfaces, worked through real-world development challenges, and focused on UI implementation and mobile development.',
   },
 ];
 

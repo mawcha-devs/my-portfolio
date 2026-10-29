@@ -21,3 +21,5 @@ Thumbs.db
 !.vscode/extensions.json
 .idea/
 coverage/
+# Claude configuration
+.claude/

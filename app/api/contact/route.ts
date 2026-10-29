@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createSupabaseClient } from '@/lib/supabase/client';
+import { profile } from '@/lib/data/portfolio';
 
 type ContactPayload = {
   name?: unknown;
@@ -64,6 +65,71 @@ function clientKey(request: Request) {
       ?.split(',')[0]
       ?.trim() ?? 'unknown'
   );
+}
+
+function escapeHtml(value: string) {
+  return value.replace(/[&<>"']/g, (character) => {
+    const entities: Record<string, string> = {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;',
+    };
+    return entities[character];
+  });
+}
+
+async function sendContactEmail(values: {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}) {
+  const apiKey = process.env.RESEND_API_KEY;
+  const from = process.env.CONTACT_FROM_EMAIL;
+  const to =
+    process.env.CONTACT_EMAIL_TO ?? profile.email;
+  if (!apiKey || !from) {
+    return {
+      configured: false as const,
+    };
+  }
+
+  const response = await fetch(
+    'https://api.resend.com/emails',
+    {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from,
+        to: [to],
+        reply_to: values.email,
+        subject: `Portfolio contact: ${values.subject}`,
+        text: [
+          `From: ${values.name} <${values.email}>`,
+          '',
+          values.message,
+        ].join('\n'),
+        html: `<p><strong>From:</strong> ${escapeHtml(values.name)} &lt;${escapeHtml(values.email)}&gt;</p><p><strong>Subject:</strong> ${escapeHtml(values.subject)}</p><p>${escapeHtml(values.message).replace(/\n/g, '<br>')}</p>`,
+      }),
+    },
+  );
+  if (!response.ok) {
+    return {
+      configured: true as const,
+      sent: false as const,
+      status: response.status,
+    };
+  }
+
+  return {
+    configured: true as const,
+    sent: true as const,
+  };
 }
 
 export async function POST(request: Request) {
@@ -143,23 +209,6 @@ export async function POST(request: Request) {
       );
     }
 
-    const { error } = await supabase
-      .from('contact_messages')
-      .insert(result.values as never);
-    if (error) {
-      console.error(
-        'Contact message insert failed:',
-        error.message,
-      );
-      return NextResponse.json(
-        {
-          error:
-            'Unable to send your message right now. Please try again later.',
-        },
-        { status: 502 },
-      );
-    }
-
     rateLimit.set(key, {
       count:
         current && current.resetAt > now
@@ -171,11 +220,70 @@ export async function POST(request: Request) {
           : now + windowMs,
     });
 
-    return NextResponse.json({ ok: true });
-  } catch {
+    const emailResult = await sendContactEmail(
+      result.values,
+    );
+    if (!emailResult.configured) {
+      return NextResponse.json(
+        {
+          error:
+            'Email delivery is not configured. Please contact the site owner directly.',
+        },
+        { status: 503 },
+      );
+    }
+    if (!emailResult.sent) {
+      console.error(
+        'Contact email delivery failed with provider status:',
+        emailResult.status,
+      );
+      return NextResponse.json(
+        {
+          error:
+            'Your message could not be emailed right now. Please try again later.',
+        },
+        { status: 502 },
+      );
+    }
+
+    const { error } = await supabase
+      .from('contact_messages')
+      .insert(result.values as never);
+    if (error) {
+      console.error(
+        'Contact message insert failed:',
+        error.message,
+      );
+      return NextResponse.json(
+        {
+          error:
+            'Your email was sent, but the message could not be archived.',
+        },
+        { status: 502 },
+      );
+    }
+
+    return NextResponse.json({
+      ok: true,
+      message: 'Your message was emailed and saved successfully.',
+    });
+  } catch (error) {
+    if (error instanceof SyntaxError) {
+      return NextResponse.json(
+        { error: 'Please send a valid message request.' },
+        { status: 400 },
+      );
+    }
+    console.error(
+      'Contact request failed unexpectedly:',
+      error instanceof Error ? error.message : 'Unknown error',
+    );
     return NextResponse.json(
-      { error: 'Please send a valid message request.' },
-      { status: 400 },
+      {
+        error:
+          'Unable to process your message right now. Please try again later.',
+      },
+      { status: 502 },
     );
   }
 }

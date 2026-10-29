@@ -93,6 +93,7 @@ export function ContactForm() {
       const result = (await response.json()) as {
         ok?: boolean;
         error?: string;
+        message?: string;
         fields?: FieldErrors;
       };
 
@@ -107,7 +108,8 @@ export function ContactForm() {
 
       setValues(initialValues);
       setServerMessage(
-        'Thanks. Your message has been sent.',
+        result.message ??
+          'Thanks. Your message has been sent.',
       );
       setStatus('success');
     } catch {
