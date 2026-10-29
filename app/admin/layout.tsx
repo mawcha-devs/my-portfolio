@@ -4,6 +4,7 @@ import { headers } from 'next/headers';
 import { getAuthSession } from '@/lib/supabase/auth';
 import { AdminLogoutButton } from '@/components/admin-logout-button';
 import { AdminNotice } from '@/components/admin-notice';
+import './globals.css';
 
 export default async function AdminLayout({
   children,
