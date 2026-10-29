@@ -111,6 +111,10 @@ export default async function AdminExperiencePage() {
     ? await client
         .from('experiences')
         .select('*')
+        .order('start_date', {
+          ascending: false,
+          nullsFirst: false,
+        })
         .order('sort_order', { ascending: true })
     : { data: null };
   const items = (data ?? []) as Experience[];

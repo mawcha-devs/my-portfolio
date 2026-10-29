@@ -55,21 +55,24 @@ export default async function ResumePage() {
                   {profile.role}
                 </p>
                 <p className="mt-2 text-sm text-muted-foreground">
-                  {profile.location} · {profile.email}
+                  {profile.location} ·{' '}
+                  <a
+                    href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(profile.email)}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-primary hover:text-foreground"
+                  >
+                    {profile.email}
+                  </a>
                 </p>
               </div>
-              <div className="shrink-0">
-                <Button
-                  variant="outline"
-                  disabled
-                  title="Add a verified PDF to enable this action"
-                >
-                  Download Resume [ADD RESUME PDF]
-                </Button>
-                <p className="mt-2 text-right text-xs text-muted-foreground">
-                  No verified PDF is available yet.
-                </p>
-              </div>
+              <a
+                href="/api/cv"
+                download="Mawcha-Haftu-CV.pdf"
+                className="inline-flex h-10 shrink-0 items-center justify-center rounded-lg border border-border px-4 text-sm font-medium transition-colors hover:border-primary/50 hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              >
+                Download CV
+              </a>
             </div>
           </Card>
 
@@ -105,8 +108,10 @@ export default async function ResumePage() {
                           {experience.role}
                         </CardTitle>
                         <CardDescription className="mt-1 text-primary">
-                          {experience.company} ·{' '}
-                          {experience.location}
+                          {experience.company}
+                          {experience.location
+                            ? ` · ${experience.location}`
+                            : ''}
                         </CardDescription>
                       </div>
                       <span className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">

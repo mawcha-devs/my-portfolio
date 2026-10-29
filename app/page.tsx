@@ -8,7 +8,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { getPortfolioData } from '@/lib/data/portfolio';
-import { TestimonialsSlider } from '@/components/testimonials-slider';
 
 const featuredProjectSlugs = [
   'project-management-system',
@@ -68,7 +67,6 @@ export default async function HomePage() {
     education,
     certifications,
     skillGroups,
-    testimonials,
   } = await getPortfolioData();
   const featuredProjects = featuredProjectSlugs
     .map((slug) =>
@@ -182,7 +180,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section className="section-shell">
+      {/* <section className="section-shell">
         <div className="container-shell grid gap-10 lg:grid-cols-[0.72fr_1.28fr] lg:items-center lg:gap-20">
           <div>
             <p className="eyebrow">Social proof</p>
@@ -196,7 +194,7 @@ export default async function HomePage() {
           </div>
           <TestimonialsSlider testimonials={testimonials} />
         </div>
-      </section>
+      </section> */}
 
       <section className="section-shell">
         <div className="container-shell">
@@ -354,9 +352,9 @@ export default async function HomePage() {
               Learning through real project work.
             </h2>
             <p className="mt-4 leading-7 text-muted-foreground">
-              Mobile development internships shaped my
-              experience with collaboration, requirements,
-              implementation, and delivery.
+              Python instruction and mobile development
+              shaped my experience with collaboration,
+              problem-solving, implementation, and delivery.
             </p>
             <Link
               href="/experience"
@@ -379,8 +377,10 @@ export default async function HomePage() {
                       {experience.role}
                     </h3>
                     <p className="mt-1 text-sm text-primary">
-                      {experience.company} ·{' '}
-                      {experience.location}
+                      {experience.company}
+                      {experience.location
+                        ? ` · ${experience.location}`
+                        : ''}
                     </p>
                   </div>
                   <span className="text-xs uppercase tracking-[0.14em] text-muted-foreground">
@@ -510,10 +510,13 @@ export default async function HomePage() {
                 <Link href="/contact">
                   <Button size="lg">Contact Me</Button>
                 </Link>
-                <a href={`mailto:${profile.email}`}>
-                  <Button variant="outline" size="lg">
-                    Email Me
-                  </Button>
+                <a
+                  href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(profile.email)}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex h-11 items-center justify-center rounded-lg border border-border bg-transparent px-5 py-2 text-sm font-medium text-foreground transition-[background-color,border-color,box-shadow,transform] duration-200 hover:-translate-y-0.5 hover:border-primary/50 hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                >
+                  Email Me
                 </a>
               </div>
             </div>

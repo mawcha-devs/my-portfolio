@@ -347,6 +347,39 @@ export async function reorderExperience(
   revalidatePath('/admin/experience');
 }
 
+export async function uploadCv(formData: FormData) {
+  const client = await getAuthorizedSupabaseClient();
+  if (!client) throw new Error('Unauthorized.');
+
+  const file = formData.get('cv');
+  if (!(file instanceof File) || file.size === 0)
+    throw new Error('Choose a PDF CV to upload.');
+  if (
+    file.type !== 'application/pdf' ||
+    file.size > 10 * 1024 * 1024
+  )
+    throw new Error('The CV must be a PDF no larger than 10 MB.');
+
+  const signature = new TextDecoder().decode(
+    new Uint8Array(await file.slice(0, 5).arrayBuffer()),
+  );
+  if (signature !== '%PDF-')
+    throw new Error('The selected file is not a valid PDF.');
+
+  const { error } = await client.storage
+    .from(assetBucket)
+    .upload('resume/current.pdf', file, {
+      contentType: 'application/pdf',
+      cacheControl: '0',
+      upsert: true,
+    });
+  if (error) throw new Error(`CV upload failed: ${error.message}`);
+
+  revalidatePath('/resume');
+  revalidatePath('/api/cv');
+  redirect('/admin/resume?status=uploaded');
+}
+
 export async function savePost(formData: FormData) {
   const client = await getAuthorizedSupabaseClient();
   if (!client) throw new Error('Unauthorized.');

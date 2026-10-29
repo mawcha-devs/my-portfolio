@@ -11,7 +11,7 @@ import { createPageMetadata } from '@/lib/seo';
 export const metadata = createPageMetadata({
   title: 'Experience',
   description:
-    'Mobile application development experience, internships, collaboration, and practical software engineering work by Mawcha Haftu.',
+    'Python instruction, mobile application development, internships, collaboration, and practical software engineering work by Mawcha Haftu.',
   path: '/experience',
 });
 
@@ -23,7 +23,7 @@ export default async function ExperiencePage() {
       <PageHeader
         eyebrow="Career"
         title="Experience"
-        description="A record of mobile-development work, team collaboration, and practical software engineering exposure."
+        description="A record of Python instruction, mobile-development work, team collaboration, and practical software engineering experience."
       />
 
       <section className="section-shell pt-0">
@@ -34,9 +34,9 @@ export default async function ExperiencePage() {
               Learning through real team-based work.
             </h2>
             <p className="mt-5 leading-7 text-muted-foreground">
-              My experience has centered on mobile
-              application development, UI implementation,
-              collaboration, and working through practical
+              My experience spans Python instruction,
+              mobile application development, UI
+              implementation, collaboration, and practical
               development challenges.
             </p>
           </div>
@@ -55,8 +55,10 @@ export default async function ExperiencePage() {
                         {experience.role}
                       </CardTitle>
                       <CardDescription className="mt-2 text-primary">
-                        {experience.company} ·{' '}
-                        {experience.location}
+                        {experience.company}
+                        {experience.location
+                          ? ` · ${experience.location}`
+                          : ''}
                       </CardDescription>
                     </div>
                     <span className="shrink-0 text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">

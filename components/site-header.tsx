@@ -81,6 +81,13 @@ export function SiteHeader() {
 
         <div className="hidden items-center gap-3 lg:flex">
           <ThemeToggle />
+          <a
+            href="/api/cv"
+            download="Mawcha-Haftu-CV.pdf"
+            className="inline-flex h-9 shrink-0 items-center justify-center rounded-lg border border-border px-3 text-xs font-medium transition-colors hover:border-primary/50 hover:bg-primary/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+          >
+            Download CV
+          </a>
           <Link href="/contact" className="shrink-0">
             <Button size="sm">Let’s Connect</Button>
           </Link>
@@ -130,6 +137,13 @@ export function SiteHeader() {
                 {item.label}
               </AppLink>
             ))}
+            <a
+              href="/api/cv"
+              download="Mawcha-Haftu-CV.pdf"
+              className="rounded-md px-3 py-2 text-sm font-medium text-primary hover:bg-muted"
+            >
+              Download CV
+            </a>
             <Link href="/contact" className="mt-2">
               <Button className="w-full">
                 Let’s Connect

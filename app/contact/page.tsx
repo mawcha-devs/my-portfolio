@@ -2,6 +2,7 @@ import { PageHeader } from '@/components/page-shell';
 import { Card } from '@/components/ui/card';
 import { ContactForm } from '@/components/contact-form';
 import { createPageMetadata } from '@/lib/seo';
+import { profile } from '@/lib/data/portfolio';
 
 export const metadata = createPageMetadata({
   title: 'Contact',
@@ -36,10 +37,12 @@ export default function ContactPage() {
                   Email
                 </p>
                 <a
-                  href="mailto:mawcha.haftu@gmail.com"
+                  href={`https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(profile.email)}`}
+                  target="_blank"
+                  rel="noreferrer"
                   className="mt-1 inline-flex font-medium text-primary hover:text-foreground"
                 >
-                  mawcha.haftu@gmail.com
+                  {profile.email}
                 </a>
               </div>
               <div>

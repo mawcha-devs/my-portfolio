@@ -7,6 +7,7 @@ export type ExperienceRecord = {
   company: string;
   location: string;
   period: string;
+  startDate: string | null;
   description: string;
 };
 
@@ -72,7 +73,7 @@ type PortfolioData = {
 export const profile = {
   name: 'Mawcha Haftu',
   role: 'Software Developer',
-  location: 'Mekelle, Ethiopia',
+  location: 'Addis Ababa, Ethiopia',
   summary:
     'I am a dedicated and detail-oriented software developer experienced in building real apps with Flutter for mobile apps and building full-stack apps with Node.js and React.js, with MySQL as my database. I bring solutions to complex problems by building simple and effective apps with modern design techniques and tools. I have been working as a mobile app developer since September 2025.',
   education: {
@@ -140,11 +141,22 @@ export const skillGroups = [
 
 export const experiences: ExperienceRecord[] = [
   {
+    id: 'exp-ahaz-platforms-python-instructor',
+    role: 'Python Instructor (Part-time)',
+    company: 'Ahaz Platforms',
+    location: '',
+    period: 'July 2026 – Present',
+    startDate: '2026-07-01',
+    description:
+      'Instructed students of all levels in Python using structured lessons and practical exercises. Covered basic topics (variables, data types, control flow, functions), intermediate subjects (data structures, file handling, OOP), and advanced concepts. Created coding challenges to reinforce learning, improve problem-solving skills, and boost confidence. Analyzed student code, offered constructive feedback, and supported debugging to help students grasp the underlying causes of errors.',
+  },
+  {
     id: 'exp-c-metnee',
     role: 'Mobile App Developer / Intern',
     company: 'C. Metnee Systems PLC',
     location: 'Addis Ababa, Ethiopia',
     period: 'October 2025 – January 2026',
+    startDate: '2025-10-01',
     description:
       'Worked on application development with teammates, worked with Git/GitHub collaboration, translated UI designs into functional mobile interfaces, worked through real-world development challenges, and focused on UI implementation and mobile development.',
   },
@@ -154,6 +166,7 @@ export const experiences: ExperienceRecord[] = [
     company: 'Grand Technology Solutions',
     location: 'Addis Ababa, Ethiopia',
     period: 'February 2026 – May 2026',
+    startDate: '2026-02-01',
     description:
       'Worked as part of a development team, contributed to a Project Management System, worked on mobile application development using Flutter, and learned and applied teamwork, requirements analysis, planning, design, and implementation.',
   },
@@ -453,6 +466,29 @@ export const sourceProjectMap = Object.fromEntries(
   projects.map((project) => [project.slug, project]),
 );
 
+function formatExperienceDate(value: string) {
+  const date = new Date(`${value}T00:00:00Z`);
+  return new Intl.DateTimeFormat('en', {
+    month: 'long',
+    year: 'numeric',
+    timeZone: 'UTC',
+  }).format(date);
+}
+
+function formatExperiencePeriod(
+  startDate?: string | null,
+  endDate?: string | null,
+) {
+  if (!startDate) {
+    return 'Ongoing';
+  }
+
+  const end = endDate
+    ? formatExperienceDate(endDate)
+    : 'Present';
+  return `${formatExperienceDate(startDate)} – ${end}`;
+}
+
 async function loadPortfolioData(): Promise<PortfolioData> {
   const fallback = {
     profile,
@@ -497,8 +533,11 @@ async function loadPortfolioData(): Promise<PortfolioData> {
           'id, role, company_name, location, start_date, end_date, description, published, sort_order',
         )
         .eq('published', true)
-        .order('sort_order', { ascending: true })
-        .order('start_date', { ascending: false }),
+        .order('start_date', {
+          ascending: false,
+          nullsFirst: false,
+        })
+        .order('sort_order', { ascending: true }),
       supabase
         .from('education')
         .select(
@@ -640,12 +679,18 @@ async function loadPortfolioData(): Promise<PortfolioData> {
       role: exp.role,
       company: exp.company_name,
       location: exp.location ?? '',
-      period:
-        exp.start_date && exp.end_date
-          ? `${exp.start_date} – ${exp.end_date}`
-          : (exp.start_date ?? 'Ongoing'),
+      startDate: exp.start_date ?? null,
+      period: formatExperiencePeriod(
+        exp.start_date,
+        exp.end_date,
+      ),
       description: exp.description,
     }));
+    remoteExperiences.sort(
+      (a, b) =>
+        (b.startDate ? Date.parse(b.startDate) : 0) -
+        (a.startDate ? Date.parse(a.startDate) : 0),
+    );
 
     const remoteEducation = (
       (educationRes.data ?? []) as Array<{
